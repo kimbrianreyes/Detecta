@@ -257,6 +257,3 @@ Contributions, issues, and feature requests are welcome!
 - Font Awesome for the icons
 - Google Fonts for Inter and Space Grotesk fonts
 
----
-
-**Built with ❤️ using Vue.js 3 and Vite**
