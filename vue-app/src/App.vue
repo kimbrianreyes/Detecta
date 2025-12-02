@@ -8,12 +8,13 @@
           <span class="logo-text">Detecta</span>
         </div>
         <div class="nav-links">
-          <a href="#features" class="nav-link">Features</a>
-          <a href="#how-it-works" class="nav-link">How It Works</a>
-          <a href="#languages" class="nav-link">Languages</a>
+          <a href="#features" class="nav-link">{{ $t('nav.features') }}</a>
+          <a href="#how-it-works" class="nav-link">{{ $t('nav.howItWorks') }}</a>
+          <a href="#languages" class="nav-link">{{ $t('nav.languages') }}</a>
+          <LanguageSelector />
           <ThemeToggle />
           <button @click="scrollToDetector" class="btn-primary">
-            Try Now
+            {{ $t('nav.tryNow') }}
             <i class="fas fa-arrow-right ml-2"></i>
           </button>
         </div>
@@ -31,33 +32,32 @@
       <div class="hero-content">
         <div class="hero-badge">
           <i class="fas fa-shield-alt"></i>
-          <span>State-of-the-Art AI Detection</span>
+          <span>{{ $t('hero.badge') }}</span>
         </div>
         
         <h1 class="hero-title">
-          Detect AI Content with
-          <span class="gradient-text">Unprecedented Accuracy</span>
+          {{ $t('hero.title') }}
+          <span class="gradient-text">{{ $t('hero.titleHighlight') }}</span>
         </h1>
         
         <p class="hero-description">
-          Powered by advanced language models trained on millions of samples. 
-          Identify ChatGPT, GPT-4, Gemini, DeepSeek, and more across 80+ languages.
+          {{ $t('hero.description') }}
         </p>
         
         <div class="hero-stats">
           <div class="stat-item">
             <div class="stat-number">80+</div>
-            <div class="stat-label">Languages</div>
+            <div class="stat-label">{{ $t('hero.stats.languages') }}</div>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
             <div class="stat-number">99%</div>
-            <div class="stat-label">Accuracy</div>
+            <div class="stat-label">{{ $t('hero.stats.accuracy') }}</div>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
-            <div class="stat-number">Real-time</div>
-            <div class="stat-label">Analysis</div>
+            <div class="stat-number">{{ $t('hero.stats.realtime') }}</div>
+            <div class="stat-label">{{ $t('hero.stats.analysis') }}</div>
           </div>
         </div>
       </div>
@@ -77,11 +77,11 @@
             <i class="fas fa-brain"></i>
             <span>Detecta</span>
           </div>
-          <p class="footer-tagline">Advanced AI Content Detection</p>
+          <p class="footer-tagline">{{ $t('footer.tagline') }}</p>
         </div>
         
         <div class="footer-copyright">
-          <p>&copy; 2025 Detecta. All rights reserved.</p>
+          <p>{{ $t('footer.copyright') }}</p>
         </div>
       </div>
     </footer>
@@ -92,13 +92,22 @@
 import DetectorSection from './components/DetectorSection.vue'
 import FeaturesSection from './components/FeaturesSection.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
+import LanguageSelector from './components/LanguageSelector.vue'
+import { i18nMixin } from './i18n/i18n.js'
 
 export default {
   name: 'App',
+  mixins: [i18nMixin],
   components: {
     DetectorSection,
     FeaturesSection,
-    ThemeToggle
+    ThemeToggle,
+    LanguageSelector
+  },
+  data() {
+    return {
+      currentLanguage: 'en'
+    }
   },
   methods: {
     scrollToDetector() {
@@ -106,9 +115,23 @@ export default {
       if (detectorSection) {
         detectorSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
+    },
+    setLanguage(lang) {
+      this.currentLanguage = lang
+      localStorage.setItem('detecta-language', lang)
+    },
+    detectBrowserLanguage() {
+      const browserLang = navigator.language || navigator.userLanguage
+      const langCode = browserLang.split('-')[0] // Get 'en' from 'en-US'
+      const supportedLangs = ['en', 'es', 'fr', 'de']
+      return supportedLangs.includes(langCode) ? langCode : 'en'
     }
   },
   mounted() {
+    // Initialize language
+    const savedLang = localStorage.getItem('detecta-language')
+    this.currentLanguage = savedLang || this.detectBrowserLanguage()
+
     // Add smooth scroll behavior
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
