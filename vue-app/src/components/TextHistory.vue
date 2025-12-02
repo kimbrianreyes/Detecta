@@ -1,33 +1,36 @@
 <template>
-  <div class="history-panel" v-if="showHistory">
-    <div class="history-header">
-      <h3>
-        <i class="fas fa-history"></i>
-        Recent Analyses
-      </h3>
-      <button @click="clearHistory" class="clear-btn" v-if="history.length > 0">
-        <i class="fas fa-trash"></i>
-        Clear All
-      </button>
-    </div>
+  <div class="history-wrapper">
+    <button @click="isExpanded = !isExpanded" class="history-toggle">
+      <i :class="isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+      <span>Recent Analyses</span>
+      <span class="history-count" v-if="history.length > 0">({{ history.length }})</span>
+    </button>
 
-    <div v-if="history.length === 0" class="empty-state">
-      <i class="fas fa-inbox"></i>
-      <p>No history yet</p>
-    </div>
+    <div class="history-panel" v-if="isExpanded">
+      <div class="history-header">
+        <button @click="clearHistory" class="clear-btn" v-if="history.length > 0">
+          <i class="fas fa-trash"></i>
+          Clear All
+        </button>
+      </div>
 
-    <div v-else class="history-list">
-      <div 
-        v-for="(item, index) in history" 
-        :key="index"
-        class="history-item"
-        @click="loadHistoryItem(item)"
-      >
-        <div class="history-item-header">
-          <span class="history-date">{{ formatDate(item.timestamp) }}</span>
-          <span class="history-score" :class="getScoreClass(item.results.aiScore)">
-            {{ Math.round(item.results.aiScore) }}% AI
-          </span>
+      <div v-if="history.length === 0" class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <p>No history yet. Analyze some text to see it here!</p>
+      </div>
+
+      <div v-else class="history-list">
+        <div 
+          v-for="(item, index) in history" 
+          :key="index"
+          class="history-item"
+          @click="loadHistoryItem(item)"
+        >
+          <div class="history-item-header">
+            <span class="history-date">{{ formatDate(item.timestamp) }}</span>
+            <span class="history-score" :class="getScoreClass(item.results.aiScore)">
+              {{ Math.round(item.results.aiScore) }}% AI
+            </span>
         </div>
         <div class="history-text">{{ truncateText(item.text) }}</div>
         <button 
@@ -40,6 +43,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -53,7 +57,8 @@ export default {
   },
   data() {
     return {
-      history: []
+      history: [],
+      isExpanded: false
     }
   },
   mounted() {
@@ -138,12 +143,42 @@ export default {
 </script>
 
 <style scoped>
+.history-wrapper {
+  margin-bottom: 2rem;
+}
+
+.history-toggle {
+  width: 100%;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.5rem;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.history-toggle:hover {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-primary);
+}
+
+.history-count {
+  color: var(--color-primary);
+  font-size: 0.875rem;
+}
+
 .history-panel {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: 1.5rem;
-  margin-bottom: 2rem;
 }
 
 .history-header {

@@ -11,6 +11,7 @@
           <a href="#features" class="nav-link">Features</a>
           <a href="#how-it-works" class="nav-link">How It Works</a>
           <a href="#languages" class="nav-link">Languages</a>
+          <ThemeToggle />
           <button @click="scrollToDetector" class="btn-primary">
             Try Now
             <i class="fas fa-arrow-right ml-2"></i>
@@ -90,12 +91,14 @@
 <script>
 import DetectorSection from './components/DetectorSection.vue'
 import FeaturesSection from './components/FeaturesSection.vue'
+import ThemeToggle from './components/ThemeToggle.vue'
 
 export default {
   name: 'App',
   components: {
     DetectorSection,
-    FeaturesSection
+    FeaturesSection,
+    ThemeToggle
   },
   methods: {
     scrollToDetector() {
@@ -140,4 +143,5 @@ export default {
 
 <style>
 @import './assets/styles.css';
+@import './assets/dark-mode.css';
 </style>

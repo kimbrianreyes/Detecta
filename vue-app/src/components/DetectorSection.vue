@@ -6,7 +6,20 @@
         <p class="section-subtitle">Paste your text below and get instant AI detection results</p>
       </div>
 
+      <!-- Text History -->
+      <TextHistory 
+        ref="history"
+        :showHistory="true"
+        @load-history="loadFromHistory"
+      />
+
       <div class="detector-card">
+        <!-- File Upload -->
+        <FileUpload 
+          @file-loaded="handleFileLoaded"
+          @file-cleared="handleFileCleared"
+        />
+        
         <div class="detector-grid">
           <!-- Input Area -->
           <div class="input-section">
@@ -168,6 +181,14 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Export Controls -->
+              <div class="export-section" style="margin-top: 1.5rem;">
+                <ExportControls 
+                  :results="results"
+                  :text="text"
+                />
+              </div>
             </div>
 
             <div v-if="error" class="error-state">
@@ -182,8 +203,17 @@
 </template>
 
 <script>
+import TextHistory from './TextHistory.vue'
+import FileUpload from './FileUpload.vue'
+import ExportControls from './ExportControls.vue'
+
 export default {
   name: 'DetectorSection',
+  components: {
+    TextHistory,
+    FileUpload,
+    ExportControls
+  },
   data() {
     return {
       text: '',
@@ -232,12 +262,33 @@ export default {
         this.results = this.processResults(data)
         this.hasAnalyzed = true
 
+        // Save to history
+        if (this.$refs.history) {
+          this.$refs.history.saveToHistory(this.text, this.results)
+        }
+
       } catch (err) {
         console.error('Analysis error:', err)
         this.error = 'Failed to analyze text. Please try again later.'
       } finally {
         this.isLoading = false
       }
+    },
+
+    loadFromHistory(item) {
+      this.text = item.text
+      this.results = item.results
+      this.hasAnalyzed = true
+      this.error = null
+    },
+
+    handleFileLoaded(text) {
+      this.text = text
+      this.error = null
+    },
+
+    handleFileCleared() {
+      // Optional: you can clear text if needed
     },
 
     processResults(data) {

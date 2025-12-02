@@ -11,15 +11,15 @@
       <input 
         ref="fileInput"
         type="file"
-        accept=".txt,.doc,.docx,.pdf"
+        accept=".txt"
         @change="handleFileSelect"
         style="display: none"
       />
       
       <div v-if="!fileName" class="drop-zone-content">
         <i class="fas fa-cloud-upload-alt"></i>
-        <p class="drop-zone-title">Drop a file here or click to browse</p>
-        <p class="drop-zone-subtitle">Supports .txt, .doc, .docx, .pdf (max 10MB)</p>
+        <p class="drop-zone-title">Drop a .txt file here or click to browse</p>
+        <p class="drop-zone-subtitle">Only .txt files are supported (max 10MB)</p>
       </div>
 
       <div v-else class="file-info">
@@ -95,11 +95,10 @@ export default {
         return
       }
 
-      // Validate file type
-      const validTypes = ['.txt', '.doc', '.docx', '.pdf']
+      // Validate file type - only .txt
       const fileExt = '.' + file.name.split('.').pop().toLowerCase()
-      if (!validTypes.includes(fileExt)) {
-        this.error = 'Unsupported file type. Please use .txt, .doc, .docx, or .pdf'
+      if (fileExt !== '.txt') {
+        this.error = 'Only .txt files are supported'
         return
       }
 
@@ -108,19 +107,7 @@ export default {
       this.isProcessing = true
 
       try {
-        let text = ''
-
-        if (fileExt === '.txt') {
-          text = await this.readTextFile(file)
-        } else if (fileExt === '.pdf') {
-          this.error = 'PDF support requires additional library. Please use .txt files for now.'
-          this.isProcessing = false
-          return
-        } else if (fileExt === '.doc' || fileExt === '.docx') {
-          this.error = 'Word document support requires additional library. Please use .txt files for now.'
-          this.isProcessing = false
-          return
-        }
+        const text = await this.readTextFile(file)
 
         if (text.trim()) {
           this.$emit('file-loaded', text)
