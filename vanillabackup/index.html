@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detecta - Advanced AI Content Detection</title>
+    <meta name="description" content="Detect AI-generated content with unprecedented accuracy. Supporting 80+ languages with detailed insights and state-of-the-art detection technology.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Vue.js 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="nav-container">
+            <div class="nav-content">
+                <div class="nav-logo">
+                    <i class="fas fa-brain logo-icon"></i>
+                    <span class="logo-text">Detecta</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#how-it-works" class="nav-link">How It Works</a>
+                    <a href="#languages" class="nav-link">Languages</a>
+                    <button @click="scrollToDetector" class="btn-primary">
+                        Try Now
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-background">
+                <div class="gradient-orb orb-1"></div>
+                <div class="gradient-orb orb-2"></div>
+                <div class="gradient-orb orb-3"></div>
+            </div>
+            
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>State-of-the-Art AI Detection</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Detect AI Content with
+                    <span class="gradient-text">Unprecedented Accuracy</span>
+                </h1>
+                
+                <p class="hero-description">
+                    Powered by advanced language models trained on millions of samples. 
+                    Identify ChatGPT, GPT-4, Gemini, DeepSeek, and more across 80+ languages.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">80+</div>
+                        <div class="stat-label">Languages</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">99%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">Real-time</div>
+                        <div class="stat-label">Analysis</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Detector Section -->
+        <section id="detector" class="detector-section">
+            <div class="detector-container">
+                <div class="detector-header">
+                    <h2 class="section-title">AI Content Detector</h2>
+                    <p class="section-subtitle">Paste your text below and get instant AI detection results</p>
+                </div>
+
+                <div class="detector-card">
+                    <div class="detector-grid">
+                        <!-- Input Area -->
+                        <div class="input-section">
+                            <div class="input-header">
+                                <label class="input-label">
+                                    <i class="fas fa-file-alt"></i>
+                                    Text to Analyze
+                                </label>
+                                <div class="char-counter" :class="{ 'text-red-500': text.length > 10000 }">
+                                    {{ text.length }} / 10,000
+                                </div>
+                            </div>
+                            
+                            <textarea 
+                                v-model="text"
+                                placeholder="Paste your text here for AI detection analysis..."
+                                class="text-input"
+                                :disabled="isLoading"
+                                maxlength="10000"
+                            ></textarea>
+                            
+                            <div class="input-footer">
+                                <div class="language-selector">
+                                    <label class="language-label">
+                                        <i class="fas fa-globe"></i>
+                                        Language
+                                    </label>
+                                    <select v-model="selectedLanguage" class="language-select" :disabled="isLoading">
+                                        <option value="en">English</option>
+                                        <option value="es">Spanish</option>
+                                        <option value="fr">French</option>
+                                        <option value="de">German</option>
+                                        <option value="it">Italian</option>
+                                        <option value="pt">Portuguese</option>
+                                        <option value="zh">Chinese</option>
+                                        <option value="ja">Japanese</option>
+                                        <option value="ko">Korean</option>
+                                        <option value="ar">Arabic</option>
+                                    </select>
+                                </div>
+                                
+                                <button 
+                                    @click="analyzeText" 
+                                    class="btn-analyze"
+                                    :disabled="!text.trim() || isLoading"
+                                    :class="{ 'opacity-50 cursor-not-allowed': !text.trim() || isLoading }"
+                                >
+                                    <span v-if="!isLoading">
+                                        <i class="fas fa-search"></i>
+                                        Analyze Text
+                                    </span>
+                                    <span v-else class="flex items-center">
+                                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                                        Analyzing...
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Results Area -->
+                        <div class="results-section">
+                            <div v-if="!hasAnalyzed && !isLoading" class="results-placeholder">
+                                <div class="placeholder-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h3 class="placeholder-title">Ready to Analyze</h3>
+                                <p class="placeholder-text">
+                                    Enter your text and click "Analyze Text" to get detailed AI detection insights
+                                </p>
+                            </div>
+
+                            <div v-if="isLoading" class="loading-state">
+                                <div class="loading-spinner"></div>
+                                <p class="loading-text">Analyzing your content...</p>
+                            </div>
+
+                            <div v-if="hasAnalyzed && !isLoading && results" class="results-content">
+                                <!-- AI Score Display -->
+                                <div class="score-display">
+                                    <div class="score-header">
+                                        <h3 class="score-title">AI Detection Score</h3>
+                                        <div class="score-badge" :class="getScoreBadgeClass(results.aiScore)">
+                                            {{ getScoreLabel(results.aiScore) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="score-circle-container">
+                                        <svg class="score-circle" viewBox="0 0 200 200">
+                                            <circle
+                                                class="score-circle-bg"
+                                                cx="100"
+                                                cy="100"
+                                                r="85"
+                                            ></circle>
+                                            <circle
+                                                class="score-circle-progress"
+                                                :class="getScoreColorClass(results.aiScore)"
+                                                cx="100"
+                                                cy="100"
+                                                r="85"
+                                                :style="{ strokeDashoffset: getCircleOffset(results.aiScore) }"
+                                            ></circle>
+                                        </svg>
+                                        <div class="score-value">
+                                            <span class="score-number">{{ Math.round(results.aiScore) }}%</span>
+                                            <span class="score-label-small">AI Generated</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Detailed Metrics -->
+                                <div class="metrics-grid">
+                                    <div class="metric-card">
+                                        <div class="metric-icon human">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="metric-content">
+                                            <div class="metric-label">Human Content</div>
+                                            <div class="metric-value">{{ Math.round(100 - results.aiScore) }}%</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="metric-card">
+                                        <div class="metric-icon ai">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                        <div class="metric-content">
+                                            <div class="metric-label">AI Content</div>
+                                            <div class="metric-value">{{ Math.round(results.aiScore) }}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Detailed Insights -->
+                                <div v-if="results.detailedInsights && results.detailedInsights.length > 0" class="insights-section">
+                                    <h4 class="insights-title">
+                                        <i class="fas fa-lightbulb"></i>
+                                        Detailed Insights
+                                    </h4>
+                                    <div class="insights-list">
+                                        <div 
+                                            v-for="(insight, index) in results.detailedInsights" 
+                                            :key="index"
+                                            class="insight-item"
+                                        >
+                                            <div class="insight-header">
+                                                <span class="insight-label">{{ insight.label }}</span>
+                                                <span class="insight-score" :class="getInsightScoreClass(insight.score)">
+                                                    {{ Math.round(insight.score) }}%
+                                                </span>
+                                            </div>
+                                            <div class="insight-bar">
+                                                <div 
+                                                    class="insight-bar-fill"
+                                                    :class="getInsightScoreClass(insight.score)"
+                                                    :style="{ width: insight.score + '%' }"
+                                                ></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div v-if="error" class="error-state">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <p>{{ error }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="features-container">
+                <div class="section-header">
+                    <h2 class="section-title">Why Choose Detecta?</h2>
+                    <p class="section-subtitle">Advanced technology meets unparalleled accuracy</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon purple">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="feature-title">State-of-the-Art Detection</h3>
+                        <p class="feature-description">
+                            Ensemble of advanced AI systems trained on millions of samples to detect ChatGPT, GPT-4, Gemini, DeepSeek, and more.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon blue">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <h3 class="feature-title">80+ Languages</h3>
+                        <p class="feature-description">
+                            Unlike other detectors limited to English, we support over 80 languages with consistent accuracy across all.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon green">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="feature-title">Detailed Insights</h3>
+                        <p class="feature-description">
+                            Know exactly which sentences and phrases are perceived as AI-generated, down to the phrase level.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon orange">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="feature-title">Real-Time Analysis</h3>
+                        <p class="feature-description">
+                            Get instant results with our optimized detection algorithms that analyze your content in seconds.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon pink">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Privacy First</h3>
+                        <p class="feature-description">
+                            Your content is analyzed securely and never stored. We prioritize your privacy and data security.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon cyan">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <h3 class="feature-title">99% Accuracy</h3>
+                        <p class="feature-description">
+                            Industry-leading accuracy powered by sophisticated language understanding algorithms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-brain"></i>
+                        <span>Detecta</span>
+                    </div>
+                    <p class="footer-tagline">Advanced AI Content Detection</p>
+                </div>
+                
+                <div class="footer-copyright">
+                    <p>&copy; 2025 Detecta. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
