@@ -9,7 +9,7 @@ createApp({
             hasAnalyzed: false,
             results: null,
             error: null,
-            apiKey: 'fc659e0477msh8f0aa3cfc5055adp1c7081jsn47020ccfb579',
+            apiKey: '',
             apiHost: 'ai-detection4.p.rapidapi.com'
         };
     },
