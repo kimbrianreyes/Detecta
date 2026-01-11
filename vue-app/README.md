@@ -9,6 +9,7 @@ A modern, professional AI content detection web application built with **Vue.js 
 ## ✨ Features
 
 ### 🎯 Core Features
+
 - 🧠 **State-of-the-Art Detection** - Identifies ChatGPT, GPT-4, Gemini, DeepSeek, and more
 - 🌍 **80+ Languages** - Supports multiple languages with consistent accuracy
 - 📊 **Detailed Insights** - Sentence and phrase-level AI detection analysis
@@ -19,18 +20,21 @@ A modern, professional AI content detection web application built with **Vue.js 
 ### 🆕 Advanced Features
 
 #### 🌓 **Dark Mode**
+
 - Toggle between light and dark themes
 - Smooth transitions with CSS variables
 - Preference saved to localStorage
 - Professional dark color scheme
 
 #### 📄 **Export Results**
+
 - **Export as PDF** - Print-friendly formatted reports
 - **Export as JSON** - Download structured data for analysis
 - **Copy to Clipboard** - Quick text copy with formatting
 - Disabled state when no results available
 
 #### 📚 **Text History**
+
 - Automatically saves last 10 analyses
 - Collapsible panel with toggle button
 - Shows timestamp and AI score preview
@@ -39,6 +43,7 @@ A modern, professional AI content detection web application built with **Vue.js 
 - Smart time formatting (e.g., "5 mins ago", "2 hours ago")
 
 #### 📁 **File Upload**
+
 - Drag & drop interface for .txt files
 - Click to browse file system
 - 10MB file size limit
@@ -47,6 +52,7 @@ A modern, professional AI content detection web application built with **Vue.js 
 - Auto-populate text area from file content
 
 #### 🌍 **Multi-Language UI**
+
 - **4 Languages Supported:**
   - 🇬🇧 English (en)
   - 🇪🇸 Spanish (es)
@@ -106,16 +112,19 @@ vue-app/
 ### Installation
 
 1. Navigate to the project directory:
+
 ```bash
 cd vue-app
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -131,6 +140,7 @@ npm run dev
 ## 🎯 Usage
 
 ### Basic Analysis
+
 1. **Enter Text**: Paste or type the text you want to analyze
 2. **Select Language**: Choose the language of your text (10 languages available)
 3. **Analyze**: Click the "Analyze Text" button
@@ -139,28 +149,33 @@ npm run dev
 ### Advanced Features
 
 #### Using File Upload
+
 1. Click the file upload area or drag a .txt file
 2. Text automatically populates in the text area
 3. Click "Analyze Text" to process
 
 #### Viewing History
+
 1. Click "Recent Analyses" to expand history panel
 2. See your last 10 analyses with scores
 3. Click any item to reload that analysis
 4. Use "Clear All" to remove all history
 
 #### Exporting Results
+
 1. After analyzing text, export buttons appear
 2. Choose PDF, JSON, or Copy to Clipboard
 3. PDF opens print dialog for saving
 4. JSON downloads as structured data file
 
 #### Changing Theme
+
 1. Click the sun/moon icon in navigation
 2. Theme switches instantly
 3. Preference saved automatically
 
 #### Changing Language
+
 1. Click the globe icon (🌍) in navigation
 2. Select from English, Spanish, French, or German
 3. Entire UI updates immediately
@@ -168,20 +183,17 @@ npm run dev
 
 ## 🔧 API Configuration
 
-The API key is configured in `src/components/DetectorSection.vue`. To use your own API key:
+Keep credentials in a local `.env` file (not committed to Git):
 
-1. Sign up at [RapidAPI](https://rapidapi.com/)
-2. Subscribe to the AI Detection API
-3. Update the `apiKey` in `DetectorSection.vue`:
+1. Create a `.env` file in the project root.
+2. Add your RapidAPI credentials:
 
-```javascript
-data() {
-  return {
-    apiKey: 'YOUR_API_KEY_HERE',
-    apiHost: 'ai-detection4.p.rapidapi.com'
-  }
-}
+```bash
+VITE_RAPIDAPI_KEY=YOUR_API_KEY_HERE
+VITE_RAPIDAPI_HOST=ai-detection4.p.rapidapi.com
 ```
+
+Restart the dev server after changing env variables.
 
 ## 🎨 Customization
 
@@ -207,26 +219,28 @@ Edit CSS variables in `src/assets/styles.css` (light theme) or `src/assets/dark-
 ## 📦 Dependencies
 
 ### Production Dependencies
+
 - `vue`: ^3.5.24 - Progressive JavaScript framework
 
 ### Development Dependencies
+
 - `@vitejs/plugin-vue`: ^5.1.4 - Official Vue plugin for Vite
 - `vite`: ^5.4.11 - Next generation frontend tooling
 
 ## 🌟 Key Features Breakdown
 
-| Feature | Description | Status |
-|---------|-------------|--------|
-| AI Detection | Multi-model AI content detection | ✅ Active |
-| Dark Mode | Theme switching with persistence | ✅ Active |
-| Multi-Language | 4 languages with auto-detection | ✅ Active |
-| Export (PDF) | Print-friendly report generation | ✅ Active |
-| Export (JSON) | Structured data download | ✅ Active |
-| Clipboard Copy | Quick results copying | ✅ Active |
-| Text History | Last 10 analyses saved locally | ✅ Active |
-| File Upload | Drag & drop .txt file support | ✅ Active |
-| Responsive Design | Mobile, tablet, desktop support | ✅ Active |
-| Real-time Analysis | Instant AI detection results | ✅ Active |
+| Feature            | Description                      | Status    |
+| ------------------ | -------------------------------- | --------- |
+| AI Detection       | Multi-model AI content detection | ✅ Active |
+| Dark Mode          | Theme switching with persistence | ✅ Active |
+| Multi-Language     | 4 languages with auto-detection  | ✅ Active |
+| Export (PDF)       | Print-friendly report generation | ✅ Active |
+| Export (JSON)      | Structured data download         | ✅ Active |
+| Clipboard Copy     | Quick results copying            | ✅ Active |
+| Text History       | Last 10 analyses saved locally   | ✅ Active |
+| File Upload        | Drag & drop .txt file support    | ✅ Active |
+| Responsive Design  | Mobile, tablet, desktop support  | ✅ Active |
+| Real-time Analysis | Instant AI detection results     | ✅ Active |
 
 ## 🔒 Privacy
 
@@ -247,6 +261,7 @@ Contributions, issues, and feature requests are welcome!
 ## 👨‍💻 Author
 
 **Your Name**
+
 - GitHub: [@yourusername](https://github.com/yourusername)
 
 ## 🙏 Acknowledgments
